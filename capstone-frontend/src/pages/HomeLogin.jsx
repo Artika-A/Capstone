@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./Home.css";
 import { FaUser,FaLock } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const baseUrl = "http://localhost:3000";
 
@@ -8,6 +9,8 @@ const baseUrl = "http://localhost:3000";
 export default function Home() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+
+    const navigate = useNavigate();
 
 
     const login = async (e) => {
@@ -24,7 +27,8 @@ export default function Home() {
 
     if (!res.ok) throw new Error(data.message || "Login failed");
     localStorage.setItem("jwt", data.token);
-    window.location.href = "/tasks";
+    window.dispatchEvent(new Event("storage"));
+    navigate("/tasks")
   } catch (err) {
     alert(err.message);
   }

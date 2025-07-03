@@ -12,8 +12,16 @@ function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-      const jwt = localStorage.getItem("jwt");
-      setIsLoggedIn(!!jwt);
+      const checkAuth = () => {
+        const jwt = localStorage.getItem("jwt");
+        setIsLoggedIn(!!jwt);
+      };
+
+      checkAuth();
+
+      window.addEventListener("storage", checkAuth);
+      return () => window.removeEventListener("storage", checkAuth);
+
     },[]);
 
     const handleLogout = () => {

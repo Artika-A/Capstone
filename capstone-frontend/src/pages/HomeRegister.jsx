@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import "./Home.css";
 import { FaUser,FaLock } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
 
 const baseUrl = "http://localhost:3000";
 
@@ -8,7 +10,7 @@ export default function HomeRegister() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    
+    const navigate =useNavigate();
 
      const register = async (e) => {
         e.preventDefault() 
@@ -24,10 +26,10 @@ export default function HomeRegister() {
 
     const data = await res.json().catch(() => { throw new Error("Invalid JSON"); });
 
-    if (res.ok) {
+    if (res.ok) {     
+      localStorage.removeItem("jwt");
       alert("Registered! Please login");
-      localStorage.setItem("jwt", data.token);
-      window.location.href = "/login";
+      navigate("/login");
     } else {
       throw new Error(data.message || "Registration failed");
     }

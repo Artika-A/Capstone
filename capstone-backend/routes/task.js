@@ -4,8 +4,12 @@ const verifyToken = require("../middleware/auth");
 
 const router = express.Router();
 
-router.use(verifyToken);
+router.use((req, res, next) => {
+  console.log(`[${req.method}] ${req.originalUrl}`)
+  next();
+})
 
+router.use(verifyToken);
 
 router.post("/", async (req, res) => {
   const task = await Task.create({ ...req.body, userId: req.user.id });
